@@ -1,0 +1,213 @@
+FROM centos:7.3.1611
+
+# Redhat DTS 4.1 (devtoolset-4) provides GCC 5.3.1
+# Building Qt5 from git: https://wiki.qt.io/Building_Qt_5_from_Git
+# Qt5 requirements: http://doc.qt.io/qt-5/linux-requirements.html
+# Qt Web Engine: http://doc.qt.io/qt-5/qtwebengine-platform-notes.html
+# PySide2: https://wiki.qt.io/PySide2_GettingStarted
+
+RUN yum install -y deltarpm && \
+    yum update -y && \
+    yum install -y git centos-release-scl && \
+    yum install -y devtoolset-4-gcc*-5.3.1 && \
+    yum install -y epel-release && \
+    yum install -y python-libs python-devel python-pip && \
+    yum install -y libXrender* libxcb* xcb* fontconfig* freetype* libXi* libXext* libX11* libSM* libICE* libglib* libpthread* gstreamer* \
+                   bison* flex* gperf* libicu-devel libxslt-devel ruby \
+                   libgcrypt-devel libgcrypt pciutils-devel nss-devel libXtst-devel gperf cups-devel pulseaudio-libs-devel libgudev1-devel systemd-devel libcap-devel alsa-lib-devel flex bison ruby gcc-c++ dbus libXrandr-devel libXcomposite-devel libXcursor-devel dbus-devel fontconfig-devel && \
+    yum install -y libxslt libxml2 libxml2-devel libxslt-devel cmake3 openssl*
+
+# Show available devtools-4 packages
+# RUN yum install -y devtoolset-4
+# RUN yum list available devtoolset-4-\*
+#
+# Available Packages
+# devtoolset-4-antlr32-javadoc.noarch            3.2-9.3.el7        centos-sclo-rh
+# devtoolset-4-antlr32-maven-plugin.noarch       3.2-9.3.el7        centos-sclo-rh
+# devtoolset-4-antlr32-tool.noarch               3.2-9.3.el7        centos-sclo-rh
+# devtoolset-4-aopalliance.noarch                1.0-10.1.el7       centos-sclo-rh
+# devtoolset-4-aopalliance-javadoc.noarch        1.0-10.1.el7       centos-sclo-rh
+# devtoolset-4-args4j-javadoc.noarch             2.0.30-3.2.el7     centos-sclo-rh
+# devtoolset-4-args4j-parent.noarch              2.0.30-3.2.el7     centos-sclo-rh
+# devtoolset-4-args4j-tools.noarch               2.0.30-3.2.el7     centos-sclo-rh
+# devtoolset-4-base64coder.noarch                20101219-13.1.el7  centos-sclo-rh
+# devtoolset-4-base64coder-javadoc.noarch        20101219-13.1.el7  centos-sclo-rh
+# devtoolset-4-bean-validation-api.noarch        1.1.0-4.2.el7      centos-sclo-rh
+# devtoolset-4-bean-validation-api-javadoc.noarch
+#                                                1.1.0-4.2.el7      centos-sclo-rh
+# devtoolset-4-binutils-devel.x86_64             2.25.1-10.el7      centos-sclo-rh
+# devtoolset-4-bouncycastle-javadoc.noarch       1.52-5.4.el7       centos-sclo-rh
+# devtoolset-4-bouncycastle-pkix-javadoc.noarch  1.52-4.2.el7       centos-sclo-rh
+# devtoolset-4-build.x86_64                      4.1-3.sc1.el7      centos-sclo-rh
+# devtoolset-4-cbi-plugins.noarch                1.1.2-3.1.el7      centos-sclo-rh
+# devtoolset-4-cbi-plugins-javadoc.noarch        1.1.2-3.1.el7      centos-sclo-rh
+# devtoolset-4-cglib.noarch                      3.1-5.3.el7        centos-sclo-rh
+# devtoolset-4-cglib-javadoc.noarch              3.1-5.3.el7        centos-sclo-rh
+# devtoolset-4-decentxml.noarch                  1.4-11.1.el7       centos-sclo-rh
+# devtoolset-4-decentxml-javadoc.noarch          1.4-11.1.el7       centos-sclo-rh
+# devtoolset-4-dockerfiles.x86_64                4.1-3.sc1.el7      centos-sclo-rh
+# devtoolset-4-dyninst-devel.x86_64              9.1.0-3.el7        centos-sclo-rh
+# devtoolset-4-dyninst-doc.x86_64                9.1.0-3.el7        centos-sclo-rh
+# devtoolset-4-dyninst-static.x86_64             9.1.0-3.el7        centos-sclo-rh
+# devtoolset-4-dyninst-testsuite.x86_64          9.1.0-3.el7        centos-sclo-rh
+# devtoolset-4-eclipse-cdt-qt.x86_64             1:8.8.1-9.4.el7    centos-sclo-rh
+# devtoolset-4-eclipse-cdt-sdk.x86_64            1:8.8.1-9.4.el7    centos-sclo-rh
+# devtoolset-4-eclipse-cdt-tests.x86_64          1:8.8.1-9.4.el7    centos-sclo-rh
+# devtoolset-4-eclipse-contributor-tools.x86_64  1:4.5.0-10.6.sc1.el7
+#                                                                   centos-sclo-rh
+# devtoolset-4-eclipse-emf-examples.noarch       2.11.2-1.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-emf-sdk.noarch            2.11.2-1.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-gef-examples.noarch       3.10.1-1.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-gef-sdk.noarch            3.10.1-1.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-license.noarch            1.0.1-7.1.el7      centos-sclo-rh
+# devtoolset-4-eclipse-linuxtools-tests.noarch   4.2.2-1.2.el7      centos-sclo-rh
+# devtoolset-4-eclipse-linuxtools-vagrant.noarch 4.2.2-1.2.el7      centos-sclo-rh
+# devtoolset-4-eclipse-mylyn-sdk.noarch          3.18.0-2.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-mylyn-tests.noarch        3.18.0-2.1.el7     centos-sclo-rh
+# devtoolset-4-eclipse-ptp-core-source.noarch    9.0.1-1.2.el7      centos-sclo-rh
+# devtoolset-4-eclipse-ptp-master.x86_64         9.0.1-1.2.el7      centos-sclo-rh
+# devtoolset-4-eclipse-ptp-sdk.noarch            9.0.1-1.2.el7      centos-sclo-rh
+# devtoolset-4-eclipse-swtbot.noarch             2.3.0-1.3.el7      centos-sclo-rh
+# devtoolset-4-eclipse-tests.x86_64              1:4.5.0-10.6.sc1.el7
+#                                                                   centos-sclo-rh
+# devtoolset-4-elfutils-devel.x86_64             0.166-1.el7        centos-sclo-rh
+# devtoolset-4-elfutils-libelf-devel.x86_64      0.166-1.el7        centos-sclo-rh
+# devtoolset-4-felix-gogo-command-javadoc.noarch 0.14.0-5.2.el7     centos-sclo-rh
+# devtoolset-4-felix-gogo-parent.noarch          0.6.0-13.2.el7     centos-sclo-rh
+# devtoolset-4-felix-gogo-runtime-javadoc.noarch 0.16.2-2.2.el7     centos-sclo-rh
+# devtoolset-4-felix-gogo-shell-javadoc.noarch   0.10.0-15.3.el7    centos-sclo-rh
+# devtoolset-4-gcc-gdb-plugin.x86_64             5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-gcc-plugin-devel.x86_64           5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-gdb-doc.noarch                    7.11-67.el7        centos-sclo-rh
+# devtoolset-4-gdb-gdbserver.x86_64              7.11-67.el7        centos-sclo-rh
+# devtoolset-4-glassfish-annotation-api-javadoc.noarch
+#                                                1.2-9.1.el7        centos-sclo-rh
+# devtoolset-4-glassfish-el-javadoc.noarch       3.0.0-5.1.el7      centos-sclo-rh
+# devtoolset-4-glassfish-hk2.noarch              2.4.0-0.7.5.b25.el7
+#                                                                   centos-sclo-rh
+# devtoolset-4-glassfish-hk2-javadoc.noarch      2.4.0-0.7.5.b25.el7
+#                                                                   centos-sclo-rh
+# devtoolset-4-glassfish-jax-rs-api-javadoc.noarch
+#                                                2.0.1-2.1.el7      centos-sclo-rh
+# devtoolset-4-glassfish-jaxb-api-javadoc.noarch 2.2.12-3.2.el7     centos-sclo-rh
+# devtoolset-4-glassfish-servlet-api-javadoc.noarch
+#                                                3.1.0-9.1.el7      centos-sclo-rh
+# devtoolset-4-guava-javadoc.noarch              18.0-4.3.el7       centos-sclo-rh
+# devtoolset-4-h2.noarch                         1.3.176-4.2.el7    centos-sclo-rh
+# devtoolset-4-h2-javadoc.noarch                 1.3.176-4.2.el7    centos-sclo-rh
+# devtoolset-4-icu4j-charset.noarch              1:54.1.1-6.3.el7   centos-sclo-rh
+# devtoolset-4-icu4j-javadoc.noarch              1:54.1.1-6.3.el7   centos-sclo-rh
+# devtoolset-4-icu4j-localespi.noarch            1:54.1.1-6.3.el7   centos-sclo-rh
+# devtoolset-4-jackson-annotations-javadoc.noarch
+#                                                2.5.0-2.2.el7      centos-sclo-rh
+# devtoolset-4-jackson-core-javadoc.noarch       2.5.0-2.3.el7      centos-sclo-rh
+# devtoolset-4-jackson-databind-javadoc.noarch   2.5.0-2.3.el7      centos-sclo-rh
+# devtoolset-4-jackson-datatype-guava-javadoc.noarch
+#                                                2.5.0-2.1.el7      centos-sclo-rh
+# devtoolset-4-jackson-jaxrs-providers-javadoc.noarch
+#                                                2.5.0-2.4.el7      centos-sclo-rh
+# devtoolset-4-jackson-module-jaxb-annotations-javadoc.noarch
+#                                                2.5.0-2.3.el7      centos-sclo-rh
+# devtoolset-4-javaewah-javadoc.noarch           0.8.4-5.2.el7      centos-sclo-rh
+# devtoolset-4-javassist.noarch                  3.18.1-4.1.el7     centos-sclo-rh
+# devtoolset-4-javassist-javadoc.noarch          3.18.1-4.1.el7     centos-sclo-rh
+# devtoolset-4-jersey-javadoc.noarch             2.18-3.3.el7       centos-sclo-rh
+# devtoolset-4-jffi-javadoc.noarch               1.2.9-8.1.el7      centos-sclo-rh
+# devtoolset-4-jgit-javadoc.noarch               4.0.1-2.4.el7      centos-sclo-rh
+# devtoolset-4-jline-javadoc.noarch              2.12.1-2.1.el7     centos-sclo-rh
+# devtoolset-4-jnr-constants-javadoc.noarch      0.8.8-3.1.el7      centos-sclo-rh
+# devtoolset-4-jnr-enxio-javadoc.noarch          0.9-3.2.el7        centos-sclo-rh
+# devtoolset-4-jnr-ffi-javadoc.noarch            2.0.3-4.2.el7      centos-sclo-rh
+# devtoolset-4-jnr-netdb-javadoc.noarch          1.1.4-2.2.el7      centos-sclo-rh
+# devtoolset-4-jnr-posix-javadoc.noarch          3.0.14-2.2.el7     centos-sclo-rh
+# devtoolset-4-jnr-unixsocket-javadoc.noarch     0.8-2.1.el7        centos-sclo-rh
+# devtoolset-4-jnr-x86asm-javadoc.noarch         1.0.2-8.2.el7      centos-sclo-rh
+# devtoolset-4-jsoup-javadoc.noarch              1.8.2-2.3.el7      centos-sclo-rh
+# devtoolset-4-jython-demo.noarch                2.7-2.2.el7        centos-sclo-rh
+# devtoolset-4-jython-javadoc.noarch             2.7-2.2.el7        centos-sclo-rh
+# devtoolset-4-jython-manual.noarch              2.7-2.2.el7        centos-sclo-rh
+# devtoolset-4-libasan-devel.x86_64              5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libatomic-devel.x86_64            5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libcilkrts-devel.x86_64           5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libgccjit.x86_64                  5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libgccjit-devel.x86_64            5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libgccjit-docs.x86_64             5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libitm-devel.x86_64               5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-liblsan-devel.x86_64              5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libmpx-devel.x86_64               5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libstdc++-docs.x86_64             5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libtsan-devel.x86_64              5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-libubsan-devel.x86_64             5.3.1-6.1.el7      centos-sclo-rh
+# devtoolset-4-lpg.x86_64                        2.0.17-19.2.el7    centos-sclo-rh
+# devtoolset-4-lpg-java.noarch                   2.0.17-19.2.el7    centos-sclo-rh
+# devtoolset-4-mockito.noarch                    1.10.19-3.7.el7    centos-sclo-rh
+# devtoolset-4-mockito-javadoc.noarch            1.10.19-3.7.el7    centos-sclo-rh
+# devtoolset-4-netty-javadoc.noarch              4.0.28-2.2.el7     centos-sclo-rh
+# devtoolset-4-oprofile-devel.x86_64             1.1.0-2.el7        centos-sclo-rh
+# devtoolset-4-oprofile-jit.x86_64               1.1.0-2.el7        centos-sclo-rh
+# devtoolset-4-osgi-annotation.noarch            6.0.0-2.1.el7      centos-sclo-rh
+# devtoolset-4-osgi-annotation-javadoc.noarch    6.0.0-2.1.el7      centos-sclo-rh
+# devtoolset-4-osgi-resource-locator-javadoc.noarch
+#                                                1.0.1-7.1.el7      centos-sclo-rh
+# devtoolset-4-rome-javadoc.noarch               0.9-19.2.el7       centos-sclo-rh
+# devtoolset-4-sac.noarch                        1.3-21.1.el7       centos-sclo-rh
+# devtoolset-4-sac-javadoc.noarch                1.3-21.1.el7       centos-sclo-rh
+# devtoolset-4-snakeyaml.noarch                  1.13-9.1.el7       centos-sclo-rh
+# devtoolset-4-snakeyaml-javadoc.noarch          1.13-9.1.el7       centos-sclo-rh
+# devtoolset-4-stringtemplate-javadoc.noarch     3.2.1-11.1.el7     centos-sclo-rh
+# devtoolset-4-swt-chart-javadoc.noarch          0.9.0-5.1.el7      centos-sclo-rh
+# devtoolset-4-systemtap-initscript.x86_64       2.9-3s.el7         centos-sclo-rh
+# devtoolset-4-systemtap-sdt-devel.x86_64        2.9-3s.el7         centos-sclo-rh
+# devtoolset-4-systemtap-server.x86_64           2.9-3s.el7         centos-sclo-rh
+# devtoolset-4-systemtap-testsuite.x86_64        2.9-3s.el7         centos-sclo-rh
+# devtoolset-4-tiger-types-javadoc.noarch        1.4-8.1.el7        centos-sclo-rh
+# devtoolset-4-tika-java7.noarch                 1.5-6.2.el7        centos-sclo-rh
+# devtoolset-4-tika-javadoc.noarch               1.5-6.2.el7        centos-sclo-rh
+# devtoolset-4-tycho.noarch                      0.23.0-8.2.bs4.el7 centos-sclo-rh
+# devtoolset-4-tycho-extras.noarch               0.23.0-2.2.el7     centos-sclo-rh
+# devtoolset-4-tycho-extras-javadoc.noarch       0.23.0-2.2.el7     centos-sclo-rh
+# devtoolset-4-tycho-javadoc.noarch              0.23.0-8.2.bs4.el7 centos-sclo-rh
+# devtoolset-4-valgrind-devel.x86_64             1:3.11.0-19.el7    centos-sclo-rh
+# devtoolset-4-valgrind-openmpi.x86_64           1:3.11.0-19.el7    centos-sclo-rh
+
+# Now installed
+# glibc 2.12
+# gcc 5.3.1-6
+# RUN /opt/rh/devtoolset-4/root/usr/bin/gcc --version
+
+# Activate devtoolset-4 gcc
+# RUN scl enable devtoolset-4 bash
+ENV PATH="/opt/rh/devtoolset-4/root/usr/bin:${PATH}"
+
+# Set workdir
+RUN mkdir -p /workdir
+WORKDIR /workdir
+
+# Clone git repositories
+RUN git clone --recursive --branch 5.6.1 https://code.qt.io/qt/qt5.git qt5 && \
+    rm -rf qt5/qtbase && \
+    rm -rf qt5/qtx11extras && \
+    git clone --recursive --branch adsk-contrib/vfx/5.6.1 https://github.com/autodesk-forks/qtbase.git qt5/qtbase && \
+    git clone --recursive --branch adsk-contrib/vfx/5.6.1 https://github.com/autodesk-forks/qtx11extras.git qt5/qtx11extras && \
+    git clone --recursive --branch 5.6 https://codereview.qt-project.org/pyside/pyside-setup pyside-setup
+
+# Configure, build and install Autodesk-forked Qt5
+RUN cd qt5 && \
+    ./configure -help
+RUN cd qt5 && \
+    ./configure -opensource -confirm-license -nomake examples -nomake tests
+RUN cd qt5 && \
+    make
+RUN cd qt5 && \
+    make install
+
+# Build and install PySide2
+RUN pip install wheel
+RUN cd pyside-setup && \
+    python setup.py \
+           bdist_wheel \
+           --ignore-git \
+           --qmake=/usr/local/Qt-5.6.1/bin/qmake \
+           --cmake=/usr/bin/cmake3 \
+           --openssl=/usr/bin/openssl
+RUN pip install /workdir/pyside-setup/dist/*.whl
