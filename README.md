@@ -1,6 +1,6 @@
 # vfxplatform-docker
 
-I wanted to build PySide2 based on CY2018 in a CentOS container and I'm just sharing this work here.
+I wanted to build PySide2 based on [CY2018 VFX Reference Platform](http://www.vfxplatform.com) in a CentOS container and I'm just sharing this work here.
 
 
 ## Build info
@@ -30,8 +30,3 @@ You can begin your own Dockerfile with e.g. `FROM fredrikaverpil/vfxplatform:[TA
 ```bash
 docker run --rm -ti fredrikaverpil/vfxplatform:[TAG] bash
 ```
-
-
-## Links
-
-* [VFX Platform](http://www.vfxplatform.com)
