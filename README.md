@@ -12,6 +12,9 @@ If there's no version specified, the application has not yet been added to the D
 | ------ | ----- | ----- | ------ | ----- | ---- | ---------------- | ----- | ------- | ---- | ---------- | ------- | ------- | --- | ----------- | ---- | ----- | --------- | --------- | ----------- |
 | CY2018 | 5.3.1 | 2.17  | 2.7.5  | 5.6.1 |      | 2.x (5.6 branch) |       |         |      |            |         |         |     |             |      |       |           |           |             |
 
+
+## Build logs
+
 Build logs are available as attachments to [releases](https://github.com/fredrikaverpil/vfxplatform-docker/releases).
 
 
