@@ -25,6 +25,13 @@ Docker images are available: https://hub.docker.com/r/fredrikaverpil/vfxplatform
 You can begin your own Dockerfile with e.g. `FROM fredrikaverpil/vfxplatform:[TAG]` to base it on an image.
 
 
+## Try it
+
+```bash
+docker run --rm -ti fredrikaverpil/vfxplatform:[TAG] bash
+```
+
+
 ## Links
 
 * [VFX Platform](http://www.vfxplatform.com)
