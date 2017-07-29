@@ -3,7 +3,7 @@
 I wanted to build PySide2 based on CY2018 in a CentOS container and I'm just sharing this work here.
 
 
-## CY2018
+## Build info
 
 If there's no version specified, the application has not yet been added to the Dockerfile/image. Feel free to create a PR! :smile:
 
