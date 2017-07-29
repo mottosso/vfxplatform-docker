@@ -20,9 +20,7 @@ Build logs are available as attachments to [releases](https://github.com/fredrik
 
 ## Docker images
 
-Docker images are available: https://hub.docker.com/r/fredrikaverpil/vfxplatform/tags/
-
-You can begin your own Dockerfile with e.g. `FROM fredrikaverpil/vfxplatform:[TAG]` to base it on an image.
+Available [here](https://hub.docker.com/r/fredrikaverpil/vfxplatform/tags/).
 
 
 ## Try it
@@ -30,3 +28,5 @@ You can begin your own Dockerfile with e.g. `FROM fredrikaverpil/vfxplatform:[TA
 ```bash
 docker run --rm -ti fredrikaverpil/vfxplatform:[TAG] bash
 ```
+
+Or you can begin your own Dockerfile with e.g. `FROM fredrikaverpil/vfxplatform:[TAG]` to base it on an image.
