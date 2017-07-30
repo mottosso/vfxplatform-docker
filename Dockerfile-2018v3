@@ -45,6 +45,7 @@ RUN cd qt5 && \
     make
 RUN cd qt5 && \
     make install
+RUN rm -rf qt5
 
 # Build and install PySide2
 RUN pip install wheel
@@ -54,5 +55,6 @@ RUN cd pyside-setup && \
            --ignore-git \
            --qmake=/usr/local/Qt-5.6.1/bin/qmake \
            --cmake=/usr/bin/cmake3 \
-           --openssl=/usr/bin/openssl
-RUN pip install /workdir/pyside-setup/dist/*.whl
+           --openssl=/usr/bin/openssl && \
+    pip install /workdir/pyside-setup/dist/*.whl && \
+    rm -rf pyside-setup
