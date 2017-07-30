@@ -11,21 +11,20 @@ FROM centos:7.3.1611
 
 RUN yum install -y deltarpm && \
     yum update -y && \
-    yum install -y git centos-release-scl && \
-    yum install -y devtoolset-4-gcc*-5.3.1 && \
-    yum install -y epel-release && \
-    yum install -y python-libs python-devel python-pip && \
-    yum install -y libXrender* libxcb* xcb* fontconfig* freetype* libXi* libXext* libX11* libSM* libICE* libglib* libpthread* gstreamer* \
-                   bison* flex* gperf* libicu-devel libxslt-devel ruby \
-                   libgcrypt-devel libgcrypt pciutils-devel nss-devel libXtst-devel gperf cups-devel pulseaudio-libs-devel libgudev1-devel systemd-devel libcap-devel alsa-lib-devel flex bison ruby gcc-c++ dbus libXrandr-devel libXcomposite-devel libXcursor-devel dbus-devel fontconfig-devel && \
-    yum install -y libxslt libxml2 libxml2-devel libxslt-devel cmake3 openssl*
+    yum install -y \
+        git centos-release-scl \
+        devtoolset-4-gcc*-5.3.1 \
+        epel-release \
+        python-libs python-devel python-pip \
+        libXrender* libxcb* xcb* fontconfig* freetype* libXi* libXext* libX11* libSM* libICE* libglib* libpthread* gstreamer* \
+        bison* flex* gperf* libicu-devel libxslt-devel ruby \
+        libgcrypt-devel libgcrypt pciutils-devel nss-devel libXtst-devel gperf cups-devel pulseaudio-libs-devel libgudev1-devel systemd-devel libcap-devel alsa-lib-devel flex bison ruby gcc-c++ dbus libXrandr-devel libXcomposite-devel libXcursor-devel dbus-devel fontconfig-devel \
+        libxslt libxml2 libxml2-devel libxslt-devel cmake3 openssl*
 
 # Activate devtoolset-4 gcc 5.3.1
 # RUN scl enable devtoolset-4 bash
 ENV PATH="/opt/rh/devtoolset-4/root/usr/bin:${PATH}"
 
-# Set workdir
-RUN mkdir -p /workdir
 WORKDIR /workdir
 
 # Clone git repositories
@@ -34,22 +33,17 @@ RUN git clone --recursive --branch 5.6.1 https://code.qt.io/qt/qt5.git qt5 && \
     rm -rf qt5/qtx11extras && \
     git clone --recursive --branch adsk-contrib/vfx/5.6.1 https://github.com/autodesk-forks/qtbase.git qt5/qtbase && \
     git clone --recursive --branch adsk-contrib/vfx/5.6.1 https://github.com/autodesk-forks/qtx11extras.git qt5/qtx11extras && \
-    git clone --recursive --branch 5.6 https://codereview.qt-project.org/pyside/pyside-setup pyside-setup
-
-# Configure, build and install Autodesk-forked Qt5
-RUN cd qt5 && \
-    ./configure -help
-RUN cd qt5 && \
-    ./configure -opensource -confirm-license -nomake examples -nomake tests
-RUN cd qt5 && \
-    make
-RUN cd qt5 && \
-    make install
-RUN rm -rf qt5
+    git clone --recursive --branch 5.6 https://codereview.qt-project.org/pyside/pyside-setup pyside-setup && \
+    cd qt5 && \
+    ./configure -help && \
+    ./configure -opensource -confirm-license -nomake examples -nomake tests && \
+    make && \
+    make install && \
+    rm -rf qt5
 
 # Build and install PySide2
-RUN pip install wheel
-RUN cd pyside-setup && \
+RUN pip install wheel && \
+    cd pyside-setup && \
     python setup.py \
            bdist_wheel \
            --ignore-git \
@@ -57,4 +51,4 @@ RUN cd pyside-setup && \
            --cmake=/usr/bin/cmake3 \
            --openssl=/usr/bin/openssl && \
     pip install /workdir/pyside-setup/dist/*.whl && \
-    rm -rf pyside-setup
+    cd .. && rm -rf pyside-setup
