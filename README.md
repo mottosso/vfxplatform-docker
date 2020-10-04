@@ -1,3 +1,11 @@
+# ⚠ Outdated
+
+This repository is not actively maintained anymore.
+
+➡
+[AcademySoftwareFoundation/aswf-docker](https://github.com/AcademySoftwareFoundation/aswf-docker) is currently maintaining docker containers for most current VFX Reference Platforms.
+
+
 # vfxplatform-docker
 
 I wanted to build PySide2 based on [CY2018 VFX Reference Platform](http://www.vfxplatform.com) in a CentOS container and I'm just sharing this work here. Perhaps this will grow to cover more applications...
